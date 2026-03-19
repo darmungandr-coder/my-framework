@@ -12,7 +12,7 @@ test('Test Case 1: Register User', async ({ page }) => {
     await nameInput.fill('NewUser');
     await emailInput.fill('NewUser@email.com')
     await signupButton.click();
-    await expect(page.getByRole('heading', { name: 'Enter Account Information' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Enter Account I nformation' })).toBeVisible();
     await page.getByRole('radio', {name: 'Mr.'}).check()
     await expect(page.getByRole('radio', { name: 'Mr.' })).toBeChecked();
     await expect(page.getByRole('radio', { name: 'Mrs.' })).not.toBeChecked();
@@ -23,6 +23,9 @@ test('Test Case 1: Register User', async ({ page }) => {
     await page.locator('#years').selectOption('1997')
     await page.getByRole('checkbox', { name: 'Sign up for our newsletter!' }).check()
     await expect(page.getByRole('checkbox', { name: 'Sign up for our newsletter!' })).toBeChecked();
+    await page.getByRole('checkbox', {name: 'Receive special offers from our partners!'}).check()
+    await expect(page.getByRole('checkbox', {name: 'Receive special offers from our partners!'})).toBeChecked()
+    
 
     await page.pause();
     
