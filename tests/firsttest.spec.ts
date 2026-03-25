@@ -1,25 +1,39 @@
-﻿import { test, expect } from '@playwright/test';
+﻿    import { test, expect } from '@playwright/test';
+    import {createUser} from "../Utiles/userFactory";
+    import {LoginPage} from "../Pages/LoginPage";
+    import {UserRegistration} from "../Pages/UserRegistration";
 
 test('Test Case 1: Register User', async ({ page }) => {
-    const nameInput = page.locator('[data-qa="signup-name"]')
-    const emailInput = page.locator('[data-qa="signup-email"]')
-    const signupButton = page.locator('[data-qa="signup-button"]')
-    await page.goto('https://automationexercise.com/login');
-    await page.locator('.fc-button.fc-cta-consent.fc-primary-button').click()
-    await expect(nameInput).toBeVisible();
-    await signupButton.click();
-    await expect(page.getByRole('heading', { name: 'New User Signup!' })).toBeVisible();
-    await nameInput.fill('NewUser');
-    await emailInput.fill('NewUser@email.com')
-    await signupButton.click();
-    await expect(page.getByRole('heading', { name: 'Enter Account Information' })).toBeVisible();
-    await page.getByRole('radio', {name: 'Mr.'}).check()
-    await expect(page.getByRole('radio', { name: 'Mr.' })).toBeChecked();
-    await expect(page.getByRole('radio', { name: 'Mrs.' })).not.toBeChecked();
-    await page.locator('#name').fill('Daniel')
-    await page.locator('#password').fill('554478896Dan')
+    // const nameInput = page.locator('[data-qa="signup-name"]')
+    // const emailInput = page.locator('[data-qa="signup-email"]')
+    // const signupButton = page.locator('[data-qa="signup-button"]')
+    // await page.goto('https://automationexercise.com/login');
+    // // await page.locator('.fc-button.fc-cta-consent.fc-primary-button').click()
+    // await expect(nameInput).toBeVisible();
+    // await signupButton.click();
+    // await expect(page.getByRole('heading', { name: 'New User Signup!' })).toBeVisible();
+    // await nameInput.fill('NewUser');
+    // await emailInput.fill('NewUser@email.com')
+    // await signupButton.click();
+    
+    const user = createUser();
+    const loginPage = new LoginPage(page);
+    const userRegistration = new UserRegistration(page);
+    await loginPage.openWeb()
+    await loginPage.acceptCookie()
+    await loginPage.signUp(user.name, user.email)
+    await userRegistration.checkHeading()
+    await userRegistration.enterAccInfo(user.name, user.password)
+    
+    
+    // await expect(page.getByRole('radio', { name: 'Mr.' })).toBeChecked();
+    // await expect(page.getByRole('radio', { name: 'Mrs.' })).not.toBeChecked();
+    // await page.locator('#name').fill('Daniel')
+    // await page.locator('#password').fill('554478896Dan')
+    await page.pause()
+    
     await page.locator('#days').selectOption('5')
-    await page.locator('#months').selectOption('July')
+    await page.locator('#months'    ).selectOption('July')
     await page.locator('#years').selectOption('1997')
     await page.getByRole('checkbox', { name: 'Sign up for our newsletter!' }).check()
     await expect(page.getByRole('checkbox', { name: 'Sign up for our newsletter!' })).toBeChecked();
