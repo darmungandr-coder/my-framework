@@ -20,15 +20,15 @@
         await loginPage.signUp(user.name, user.email);
         await userRegistration.checkHeading();
         await userRegistration.enterAccInfo(user);
-        await userRegistration.checkboxNewsLetter.check()
-        await userRegistration.checkboxSpecialOffers.check()
+        await userRegistration.checkNewsLetter()
+        await userRegistration.checkSpecialOffers()
         await userRegistration.enterAddressInfo(user);
         await userRegistration.createAccount()
         // Confirmation 
         await expect(userRegistration.accountCreatedHeading).toBeVisible()
         await userRegistration.continueAfterCreateAccount()
 
-        // Main Page
+        // Main Page // Deleting
         await mainPage.deleteAccountButton.click()
         await expect(mainPage.deleteAccountHeading).toBeVisible()
 

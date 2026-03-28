@@ -68,7 +68,6 @@ export class UserRegistration {
         await this.dateOfBirth.selectOption(user.dateOfBirth)
         await this.monthOfBirth.selectOption(user.monthOfBirth)
         await this.yearOfBirth.selectOption(user.yearOfBirth)
-        await this.checkboxNewsLetter.check()
     }
 
     async enterAddressInfo(user: User) {
@@ -92,5 +91,16 @@ export class UserRegistration {
         await this.continueButton.click()
 
     }
+    
+    async  checkNewsLetter(){
+        await this.checkboxNewsLetter.check()
+    }
+    
+    
+    async  checkSpecialOffers(){
+        await this.checkboxSpecialOffers.check()
+    }
+    
+    
     
 }
