@@ -6,15 +6,17 @@ export class LoginPage{
     signUpEmailInput: Locator
     signUpButton: Locator;
     cookieAcceptButton: Locator;
+    signUpHeading: Locator;
     constructor(page: Page) {
         this.page = page;
         this.signUpNameInput = page.locator('[data-qa="signup-name"]')
         this.signUpEmailInput = page.locator('[data-qa="signup-email"]')
         this.signUpButton = page.locator('[data-qa="signup-button"]')
         this.cookieAcceptButton = page.locator('.fc-button.fc-cta-consent.fc-primary-button')
+        this.signUpHeading = page.getByRole('heading', { name: 'New User Signup!' })
     }
     
-    async openWeb(){
+    async openLoginPage(){
         await this.page.goto('https://automationexercise.com/login');
     }
     
