@@ -25,7 +25,6 @@ This project is my learning and practice repository where I build a structured E
 
 ## Project Structure
 
-```bash
 my-framework/
 │
 ├── .github/workflows/      # CI workflows
