@@ -17,7 +17,7 @@
     mobilePhone: string;
 };
 
-const user: User = {
+export const user: User = {
     name: 'Daniil',
     email: 'Daniil@gmail.com',
     password: '554478896',
