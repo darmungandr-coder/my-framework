@@ -47,9 +47,15 @@ export class MainPage{
         await this.logOutButton.click()
     }
 
-    async  acceptCookie(){
-        await this.cookieAcceptButton.click()
-    }
+    async acceptCookie() {
+        const isCookieVisible = await this.cookieAcceptButton
+            .isVisible({ timeout: 5000 })
+            .catch(() => false);
+
+        if (isCookieVisible) {
+            await this.cookieAcceptButton.click();
+  }
+}
     
     async openLogiInPage(){
         await this.openMainPage()
