@@ -5,7 +5,7 @@
     import {MainPage} from "../Pages/MainPage";
     import {ContactUsPage} from "../Pages/ContactUsPage";
 
-    test.skip('Test Case 1: Register User', async ({ page }) => {
+    test('Test Case 1: Register User', async ({ page }) => {
         const newUser = createUser();
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
@@ -34,7 +34,7 @@
     })
     
     
-    test.skip('Test Case 2: Login User with correct email and password', async ({page}) =>{
+    test('Test Case 2: Login User with correct email and password', async ({page}) =>{
 
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
@@ -56,7 +56,7 @@
         // await expect(mainPage.deleteAccountHeading).toBeVisible()
     })
     
-    test.skip('Test Case 3: Login User with incorrect email and password', async ({page})=>{
+    test('Test Case 3: Login User with incorrect email and password', async ({page})=>{
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
         
@@ -79,7 +79,7 @@
         
     })
     
-    test.skip('Test Case 4: Logout User', async ({page}) =>{
+    test('Test Case 4: Logout User', async ({page}) =>{
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
 
@@ -101,7 +101,7 @@
         await expect(page).toHaveURL('https://automationexercise.com/login')
     })
     
-    test.skip('Test Case 5: Register User with existing email', async  ({page})=> {
+    test('Test Case 5: Register User with existing email', async  ({page})=> {
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
         // Main Page 
@@ -124,8 +124,7 @@
         // Contact us
         await expect (contactUsPage.getInTouchLabel).toBeVisible()
         await contactUsPage.fillContactInformation()
-        await contactUsPage.submitContactInformation()
-        await page.pause()
+        await contactUsPage.submitContactInformation
         
 
     })

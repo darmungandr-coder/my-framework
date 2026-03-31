@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","7652","Test Case 4: Logout User","chromium","2026-03-31","passed","2026-03-31","","authentication.spec.ts","",""
+"","4425","Test Case 6: Contact Us Form","chromium","2026-03-31","passed","2026-03-31","","authentication.spec.ts","",""
+"","4832","Test Case 5: Register User with existing email","chromium","2026-03-31","passed","2026-03-31","","authentication.spec.ts","",""
+"","4604","Test Case 3: Login User with incorrect email and password","chromium","2026-03-31","passed","2026-03-31","","authentication.spec.ts","",""
+"","5","Test Case 2: Login User with correct email and password","chromium","2026-03-31","skipped","2026-03-31","","authentication.spec.ts","",""
+"","8501","Test Case 1: Register User","chromium","2026-03-31","passed","2026-03-31","","authentication.spec.ts","",""
