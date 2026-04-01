@@ -22,7 +22,7 @@ export class MainPage{
         this.signupLoginButton = page.getByRole('link', { name: 'Signup / Login' })
         this.deleteAccountButton = page.getByRole('link', { name: 'Delete Account' })
         this.deleteAccountHeading = page.getByText('ACCOUNT DELETED!')
-        this.loggedInAsLabel = page.getByText(`Logged in as ${user.name}`, { exact: true })
+        this.loggedInAsLabel = page.getByText(`Logged in as`)
         this.logOutButton = page.getByRole('link', { name: 'Logout' })
         this.cookieAcceptButton = page.locator('.fc-button.fc-cta-consent.fc-primary-button')
         this.contactUsButton = page.getByRole('link', { name: 'Contact us' })
@@ -66,5 +66,9 @@ export class MainPage{
     
     async openContactUsPage(){
         await this.contactUsButton.click()
+    }
+
+    loggedInAs(name:string){
+        return  this.page.getByText(`Logged in as ${name}`, { exact: true })
     }
 }
