@@ -130,29 +130,6 @@ The workflow in [playwright.yml](/c:/Users/Gladk/Desktop/my-framework/my-framewo
 - generates and uploads reports
 - is prepared to publish the Allure report through GitHub Pages
 
-## How To Turn This Into A Better Portfolio Demo
-
-If you want the repository to look stronger to recruiters, hiring managers, or teammates, these upgrades will have the biggest visual impact:
-
-1. Add a screenshot of the Allure report near the top of the README.
-2. Add a screenshot of a successful GitHub Actions run with artifacts or Pages deployment.
-3. Create a `docs/` folder with `demo-report.png` and `demo-actions.png`.
-4. Add a short `Architecture` section that explains `tests/`, `Pages/`, and `Utiles/`.
-5. Use `test.step()` in important tests so the report reads like a guided scenario.
-6. Add one small status table with browser, CI mode, and report availability.
-7. Keep the main branch green so the badge always looks trustworthy.
-
-## Suggested Demo Layout
-
-If you want this repository to feel polished, this is the best presentation order:
-
-1. Badge + one-sentence project value
-2. Direct links to Actions and report
-3. Screenshot or GIF
-4. Covered scenarios
-5. Tech stack
-6. Local run commands
-7. CI and reporting details
 
 ## Notes
 
