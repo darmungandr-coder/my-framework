@@ -12,6 +12,8 @@ export class LoginPage{
     loginButton: Locator;
     invalidLogInCredentials: Locator;
     alreadyExistinAccLabel: Locator;
+    incorrectEmailOrPasswordMessage: Locator;
+
     
     constructor(page: Page) {
         this.page = page;
@@ -25,6 +27,8 @@ export class LoginPage{
         this.loginButton = page.getByRole('button', { name: 'Login' })
         this.invalidLogInCredentials = page.getByText('Your email or password is incorrect!', { exact: true })
         this.alreadyExistinAccLabel = page.getByText('Email Address already exist!', { exact: true })
+        this.incorrectEmailOrPasswordMessage = page.getByText('Your email or password is incorrect!', { exact: true })
+
         
     }
     
