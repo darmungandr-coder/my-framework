@@ -7,7 +7,7 @@
 
 
 
-    test.only('Test Case 1: Register User', async ({ page }) => {
+    test('Test Case 1: Register User', async ({ page }) => {
         const newUser = createUser();
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
