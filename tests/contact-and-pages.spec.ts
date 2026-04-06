@@ -20,6 +20,8 @@
 
         // Click on 'Contact Us' button
         await mainPage.openContactUsPage()
+        await expect(page).toHaveURL('https://automationexercise.com/contact_us')
+        await page.waitForLoadState('load')
 
         // Verify 'GET IN TOUCH' is visible
         await expect (contactUsPage.getInTouchLabel).toBeVisible()
