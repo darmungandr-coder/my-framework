@@ -9,16 +9,33 @@
         const mainPage = new MainPage(page)
         const contactUsPage = new ContactUsPage(page);
         
-        // Main page 
+        // Navigate to url 'http://automationexercise.com'
         await mainPage.openMainPage()
+
+        // Accept cookie
         await mainPage.acceptCookie()
-        await expect(mainPage.carousel).toBeVisible()
+
+        // Verify that home page is visible successfully
+        await expect(mainPage.homePageSlider).toBeVisible()
+
+        // Click on 'Contact Us' button
         await mainPage.openContactUsPage()
-        
-        // Contact us
+
+        // Verify 'GET IN TOUCH' is visible
         await expect (contactUsPage.getInTouchLabel).toBeVisible()
+
+        // Enter name, email, subject and message
         await contactUsPage.fillContactInformation()
-        await contactUsPage.submitContactInformation()
-        
+
+        // Upload file
+        await contactUsPage.selectFile()
+
+        // Click OK button and submit form
+        await contactUsPage.submitContactFormAndAcceptAlert();
+        await expect(contactUsPage.successMessage).toBeVisible();
+
+        // Click 'Home' button and verify that landed to home page successfully
+        await mainPage.openMainPage()
+        await expect(mainPage.homePageSlider).toBeVisible()
 
     })

@@ -5,82 +5,82 @@ import { User} from "../Utiles/userFactory";
 
 export class UserRegistration {
     page: Page;
-    heading: Locator
-    title: Locator
-    name: Locator
-    password: Locator
-    dateOfBirth: Locator;
-    monthOfBirth: Locator;
-    yearOfBirth: Locator;
-    checkboxNewsLetter: Locator;
-    checkboxSpecialOffers: Locator;
+    accountInformationHeading: Locator
+    titleMrRadioButton: Locator
+    nameInput: Locator
+    passwordInput: Locator
+    birthDaySelect: Locator;
+    birthMonthSelect: Locator;
+    birthYearSelect: Locator;
+    newsletterCheckbox: Locator;
+    specialOffersCheckbox: Locator;
     firstNameInput: Locator;
     lastNameInput: Locator;
-    companyNameInput: Locator;
+    companyInput: Locator;
     address1Input: Locator;
     address2Input: Locator;
-    countrySelector: Locator;
+    countrySelect: Locator;
     stateInput: Locator;
     cityInput: Locator;
-    zipCodeInput: Locator;
-    mobilePhoneInput: Locator;
+    zipcodeInput: Locator;
+    mobileNumberInput: Locator;
     createAccountButton: Locator;
     accountCreatedHeading: Locator;
-    continueButton: Locator;
+    continueLink: Locator;
     
 
 
     constructor(page: Page) {
         this.page = page
-        this.heading = page.getByRole('heading', {name: 'Enter Account Information'})
-        this.title = page.getByRole('radio', {name: 'Mr.'})
-        this.name = page.locator('#name')
-        this.password = page.locator('#password')
-        this.dateOfBirth = page.locator('#days')
-        this.monthOfBirth = page.locator('#months')
-        this.yearOfBirth = page.locator('#years')
-        this.checkboxNewsLetter = page.getByRole('checkbox', {name: 'Sign up for our newsletter!'})
-        this.checkboxSpecialOffers = page.getByRole('checkbox', {name: 'Receive special offers from our partners!'})
-        this.firstNameInput = page.getByRole('textbox', {name: 'First name *'})
-        this.lastNameInput = page.getByRole('textbox', {name: 'Last name *'})
-        this.companyNameInput = page.locator('#company')
+        this.accountInformationHeading = page.getByText('Enter Account Information')
+        this.titleMrRadioButton = page.getByRole('radio', {name: 'Mr.'})
+        this.nameInput = page.locator('#name')
+        this.passwordInput = page.locator('#password')
+        this.birthDaySelect = page.locator('#days')
+        this.birthMonthSelect = page.locator('#months')
+        this.birthYearSelect = page.locator('#years')
+        this.newsletterCheckbox = page.locator('#newsletter')
+        this.specialOffersCheckbox = page.locator('#optin')
+        this.firstNameInput = page.locator('#first_name')
+        this.lastNameInput = page.locator('#last_name')
+        this.companyInput = page.locator('#company')
         this.address1Input = page.locator('#address1')
         this.address2Input = page.locator('#address2')
-        this.countrySelector = page.locator('#country')
-        this.stateInput = page.locator('#state[data-qa="state"]')
-        this.cityInput = page.locator('#city[data-qa="city"]')
-        this.zipCodeInput = page.locator('#zipcode[data-qa="zipcode"]')
-        this.mobilePhoneInput = page.locator('#mobile_number[data-qa="mobile_number"]')
+        this.countrySelect = page.locator('#country')
+        this.stateInput = page.locator('#state')
+        this.cityInput = page.locator('#city')
+        this.zipcodeInput = page.locator('#zipcode')
+        this.mobileNumberInput = page.locator('#mobile_number')
         this.createAccountButton = page.getByRole('button', {name: 'Create Account'})
-        this.accountCreatedHeading = page.getByText('Account Created!')
-        this.continueButton = page.locator('a:has-text("Continue")')
+        this.accountCreatedHeading = page.locator('[data-qa="account-created"]')
+        this.continueLink = page.locator('a:has-text("Continue")')
 
     }
 
     async checkHeading() {
-        await expect(this.heading).toBeVisible()
+        await expect(this.accountInformationHeading).toBeVisible()
     }
 
     async enterAccInfo(user: User) {
-        await this.title.check()
-        await this.name.fill(user.name)
-        await this.password.fill(user.password)
-        await this.dateOfBirth.selectOption(user.dateOfBirth)
-        await this.monthOfBirth.selectOption(user.monthOfBirth)
-        await this.yearOfBirth.selectOption(user.yearOfBirth)
+        await this.titleMrRadioButton.check()
+        await this.nameInput.fill(user.name)
+        await this.passwordInput.fill(user.password)
+        await this.birthDaySelect.selectOption(user.dateOfBirth)
+        await this.birthMonthSelect.selectOption(user.monthOfBirth)
+        await this.birthYearSelect.selectOption(user.yearOfBirth)
     }
 
     async enterAddressInfo(user: User) {
         await this.firstNameInput.fill(user.firstName)
         await this.lastNameInput.fill(user.lastName)
-        await this.companyNameInput.fill(user.company)
+        await this.companyInput.fill(user.company)
         await this.address1Input.fill(user.address1)
         await this.address2Input.fill(user.address2)
-        await this.countrySelector.selectOption(user.country)
+        await this.countrySelect.selectOption(user.country)
         await this.stateInput.fill(user.state)
         await this.cityInput.fill(user.city)
-        await this.zipCodeInput.fill(user.zipCode)
-        await this.mobilePhoneInput.fill(user.mobilePhone)
+        await this.zipcodeInput.fill(user.zipCode)
+        await this.mobileNumberInput.fill(user.mobilePhone)
     }
 
     async createAccount() {
@@ -88,17 +88,17 @@ export class UserRegistration {
     }
 
     async continueAfterCreateAccount() {
-        await this.continueButton.click()
+        await this.continueLink.click()
 
     }
     
     async  checkNewsLetter(){
-        await this.checkboxNewsLetter.check()
+        await this.newsletterCheckbox.check()
     }
     
     
     async  checkSpecialOffers(){
-        await this.checkboxSpecialOffers.check()
+        await this.specialOffersCheckbox.check()
     }
     
     

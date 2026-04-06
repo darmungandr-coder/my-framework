@@ -10,17 +10,22 @@ export class ContactUsPage{
     yourMessageHere: Locator
     attachFileButton: Locator
     submitButton: Locator
+    getInTouchContainer: Locator
+    successMessage: Locator
+
     
     
     constructor(page: Page) {
         this.page = page
+        this.getInTouchContainer = page.locator('.contact-form')
         this.getInTouchLabel = page.getByRole('heading', { name: 'Get In Touch' })
-        this.nameTextBox = page.getByRole('textbox', { name: 'Name' })
-        this.emailTextBox = page.locator('[name="email"]')
-        this.subjectTextBox = page.getByRole('textbox', { name: 'Subject' })
-        this.yourMessageHere = page.getByRole('textbox', { name: 'Your Message Here' })
+        this.nameTextBox = page.locator('[data-qa="name"]')
+        this.emailTextBox = page.locator('[data-qa="email"]')
+        this.subjectTextBox = page.locator('[data-qa="subject"]')
+        this.yourMessageHere = page.locator('[data-qa="message"]')
         this.attachFileButton = page.locator('[name="upload_file"]')
-        this.submitButton = page.locator('[name="submit"]')
+        this.submitButton = this.getInTouchContainer.getByRole('button', { name: 'Submit' })
+        this.successMessage = this.getInTouchContainer.getByText('Success! Your details have been submitted successfully.')
     }
     
     async fillContactInformation(){
@@ -28,11 +33,18 @@ export class ContactUsPage{
         await this.emailTextBox.fill(contactFormData.email)
         await this.subjectTextBox.fill(contactFormData.subjectText)
         await this.yourMessageHere.fill(contactFormData.yourMessageText)
+    }
+
+    async selectFile(){
         await this.attachFileButton.setInputFiles(contactFormData.attachFilePath)
     }
     
-    async submitContactInformation(){
-        await this.submitButton.click()
+    async submitContactFormAndAcceptAlert() {
+        this.page.once('dialog', async dialog => {
+            await dialog.accept();
+        });
+
+        await this.submitButton.click();
+        await this.successMessage.waitFor({ state: 'visible' });
     }
-    
 }
