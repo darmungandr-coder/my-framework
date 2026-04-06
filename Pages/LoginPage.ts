@@ -12,7 +12,6 @@ export class LoginPage{
     loginButton: Locator;
     invalidLogInCredentials: Locator;
     alreadyExistinAccLabel: Locator;
-    incorrectEmailOrPasswordMessage: Locator;
 
     
     constructor(page: Page) {
@@ -22,13 +21,11 @@ export class LoginPage{
         this.signUpButton = page.locator('[data-qa="signup-button"]')
         this.signUpHeading = page.getByRole('heading', { name: 'New User Signup!' })
         this.loginHeading = page.getByRole('heading', { name: 'Login to your account' })
-        this.loginEmailAddress = page.locator("//input[@data-qa='login-email']")
+        this.loginEmailAddress = page.locator('[data-qa="login-email"]')
         this.passwordInput = page.getByRole('textbox', { name: 'Password' })
         this.loginButton = page.getByRole('button', { name: 'Login' })
         this.invalidLogInCredentials = page.getByText('Your email or password is incorrect!', { exact: true })
         this.alreadyExistinAccLabel = page.getByText('Email Address already exist!', { exact: true })
-        this.incorrectEmailOrPasswordMessage = page.getByText('Your email or password is incorrect!', { exact: true })
-
         
     }
     

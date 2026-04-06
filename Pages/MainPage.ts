@@ -16,6 +16,7 @@ export class MainPage{
 
 
 
+
     constructor(page: Page) {
         this.page = page
         this.carousel = page.locator('.col-sm-12')
@@ -26,8 +27,6 @@ export class MainPage{
         this.logOutButton = page.getByRole('link', { name: 'Logout' })
         this.cookieAcceptButton = page.locator('.fc-button.fc-cta-consent.fc-primary-button')
         this.contactUsButton = page.getByRole('link', { name: 'Contact us' })
-        
-
     }
     
     async openMainPage(){

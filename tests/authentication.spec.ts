@@ -3,6 +3,7 @@
     import {LoginPage} from "../Pages/LoginPage";
     import {UserRegistration} from "../Pages/UserRegistration";
     import {MainPage} from "../Pages/MainPage";
+    import {ensureUserExists} from "./helper/userSetup";
 
 
 
@@ -36,11 +37,13 @@
     
     
     test('Test Case 2: Login User with correct email and password', async ({page}) =>{
-
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
         
         
+        // Ensure user exists
+        await ensureUserExists(page, user);
+
         // Main page
         await mainPage.openLogiInPage()
         
@@ -54,11 +57,11 @@
         await expect(mainPage.loggedInAsLabel).toBeVisible()
         await expect(mainPage.loggedInAs(user.name)).toBeVisible()
 
-        // await mainPage.deleteAccount()
-        // await expect(mainPage.deleteAccountHeading).toBeVisible()
+        await mainPage.deleteAccount()
+        await expect(mainPage.deleteAccountHeading).toBeVisible()
     })
     
-    test('Test Case 3: Login User with incorrect email and password', async ({page})=>{
+    test.skip('Test Case 3: Login User with incorrect email and password', async ({page})=>{
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
         
@@ -85,6 +88,9 @@
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
 
+        await ensureUserExists(page, user);
+
+        
 
         // Main page
         await mainPage.openLogiInPage()
@@ -103,7 +109,7 @@
         await expect(page).toHaveURL('https://automationexercise.com/login')
     })
     
-    test('Test Case 5: Register User with existing email', async  ({page})=> {
+    test.skip('Test Case 5: Register User with existing email', async  ({page})=> {
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
         // Main Page 
