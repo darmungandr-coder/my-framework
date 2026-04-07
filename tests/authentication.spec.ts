@@ -4,6 +4,7 @@
     import {UserRegistration} from "../Pages/UserRegistration";
     import {MainPage} from "../Pages/MainPage";
     import {ensureUserExists} from "./helper/userSetup";
+    import {NavigationBar} from "../Pages/NavigationBar";
 
 
 
@@ -12,6 +13,7 @@
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
         const userRegistration = new UserRegistration(page);
+        const navigationBar = new NavigationBar(page);
 
         // Open main page
         await mainPage.openMainPage();
@@ -24,7 +26,7 @@
         await expect(mainPage.homePageSlider).toBeVisible()
 
         // Open 'Signup/Login page
-        await mainPage.openSignUpLoginPage()
+        await navigationBar.openSignupLoginPage()
 
         // Verify 'New User Signup!' is visible
         await expect(loginPage.signupHeading).toBeVisible()
@@ -70,7 +72,7 @@
 
 
         // Click 'Delete Account' button
-        await mainPage.deleteAccount()
+        await navigationBar.deleteAccount()
 
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
         await expect(mainPage.accountDeletedHeading).toBeVisible()
@@ -85,6 +87,7 @@
         test('Test Case 2: Login User with correct email and password', async ({page}) =>{
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
+        const navigationBar = new NavigationBar(page);
         
         // Ensure user exists
         await ensureUserExists(page, user);
@@ -100,7 +103,7 @@
         await expect(mainPage.homePageSlider).toBeVisible()
 
         // Click on 'Signup / Login' button
-        await mainPage.openSignUpLoginPage()
+        await navigationBar.openSignupLoginPage()
 
         // Verify 'Login to your account' is visible
         await expect(loginPage.loginHeading).toBeVisible()
@@ -115,7 +118,7 @@
         await expect(mainPage.loggedInAs(user.name)).toBeVisible()
 
         // Click 'Delete Account' button
-        await mainPage.deleteAccount()
+        await navigationBar.deleteAccount()
 
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
         await expect(mainPage.accountDeletedHeading).toBeVisible()
@@ -125,6 +128,7 @@
         test('Test Case 4: Logout User', async ({page}) =>{
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
+        const navigationBar = new NavigationBar(page);
         
         // Prepare user
         await ensureUserExists(page, user);
@@ -140,7 +144,7 @@
         await expect(mainPage.homePageSlider).toBeVisible()
 
         // Click on 'Signup / Login' button
-        await mainPage.openSignUpLoginPage()
+        await navigationBar.openSignupLoginPage()
 
         // Verify 'Login to your account' is visible
         await expect(loginPage.loginHeading).toBeVisible()
@@ -155,7 +159,7 @@
         await expect(mainPage.loggedInAs(user.name)).toBeVisible()
 
         // Click 'Logout' button
-        await mainPage.userLogOut()
+        await navigationBar.logoutUser()
 
         // Verify that user is navigated to login page
         await expect(page).toHaveURL('https://automationexercise.com/login')
@@ -164,6 +168,7 @@
         test('Test Case 5: Register User with existing email', async  ({page})=> {
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
+        const navigationBar = new NavigationBar(page);
         // Prepare user
         await ensureUserExists(page, user);
 
@@ -178,7 +183,7 @@
         await expect(mainPage.homePageSlider).toBeVisible()
 
         // Click on 'Signup / Login' button
-        await mainPage.openSignUpLoginPage()
+        await navigationBar.openSignupLoginPage()
 
         // Verify 'New User Signup!' is visible
         await expect(loginPage.signupHeading).toBeVisible()
@@ -202,6 +207,7 @@
     test('Test Case 3: Login User with incorrect email and password', async ({page})=>{
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
+        const navigationBar = new NavigationBar(page);
         
         const invalidUser = {
             ...user,
@@ -221,7 +227,7 @@
         await expect(mainPage.homePageSlider).toBeVisible()
 
         //  Click on 'Signup / Login' button
-        await mainPage.openSignUpLoginPage()
+        await navigationBar.openSignupLoginPage()
 
         //  Verify 'Login to your account' is visible
         await expect(loginPage.loginHeading).toBeVisible()

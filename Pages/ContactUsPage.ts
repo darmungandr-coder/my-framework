@@ -12,6 +12,7 @@ export class ContactUsPage{
     submitButton: Locator
     getInTouchContainer: Locator
     successMessage: Locator
+    backToHomeButton: Locator
 
     
     
@@ -26,6 +27,8 @@ export class ContactUsPage{
         this.attachFileButton = page.locator('[name="upload_file"]')
         this.submitButton = this.getInTouchContainer.getByRole('button', { name: 'Submit' })
         this.successMessage = this.getInTouchContainer.getByText('Success! Your details have been submitted successfully.')
+        this.backToHomeButton = this.getInTouchContainer.getByRole('link', { name: 'Home' })
+
     }
     
     async fillContactInformation(){
@@ -47,4 +50,9 @@ export class ContactUsPage{
         await this.submitButton.click();
         await this.successMessage.waitFor({ state: 'visible' });
     }
+
+    async backToHomePage(){
+        await this.backToHomeButton.click()
+    }
+
 }

@@ -1,18 +1,19 @@
 import { Page, expect } from '@playwright/test';
 import { MainPage } from '../../Pages/MainPage';
 import { LoginPage } from '../../Pages/LoginPage';
+import { NavigationBar } from '../../Pages/NavigationBar';
 import { UserRegistration } from '../../Pages/UserRegistration';
 import { User } from '../../Utiles/userFactory';
 
 type LoginResult = 'logged_in' | 'invalid_credentials' | 'unknown';
 
 async function detectLoginResult(
-  mainPage: MainPage,
+  navigationBar: NavigationBar,
   loginPage: LoginPage
 ): Promise<LoginResult> {
   await expect
     .poll(async () => {
-      if (await mainPage.logoutLink.isVisible()) {
+      if (await navigationBar.logoutButton.isVisible()) {
         return 'logged_in';
       }
 
@@ -24,7 +25,7 @@ async function detectLoginResult(
     }, { timeout: 7000 })
     .not.toBe('unknown');
 
-  if (await mainPage.logoutLink.isVisible()) {
+  if (await navigationBar.logoutButton.isVisible()) {
     return 'logged_in';
   }
 
@@ -38,6 +39,7 @@ async function detectLoginResult(
 export async function ensureUserExists(page: Page, user: User) {
   const loginPage = new LoginPage(page);
   const mainPage = new MainPage(page);
+  const navigationBar = new NavigationBar(page);
   const userRegistration = new UserRegistration(page);
 
   await loginPage.openLoginPage();
@@ -47,10 +49,10 @@ export async function ensureUserExists(page: Page, user: User) {
   await loginPage.enterLoginCredentials(user.email, user.password);
   await loginPage.submitLogin();
 
-  const loginResult = await detectLoginResult(mainPage, loginPage);
+  const loginResult = await detectLoginResult(navigationBar, loginPage);
 
   if (loginResult === 'logged_in') {
-    await mainPage.userLogOut();
+    await navigationBar.logoutUser();
     return;
   }
 
@@ -66,8 +68,8 @@ export async function ensureUserExists(page: Page, user: User) {
 
     await expect(userRegistration.accountCreatedHeading).toBeVisible();
     await userRegistration.continueAfterCreateAccount();
-    await expect(mainPage.logoutLink).toBeVisible();
-    await mainPage.userLogOut();
+    await expect(navigationBar.logoutButton).toBeVisible();
+    await navigationBar.logoutUser();
     return;
   }
 
