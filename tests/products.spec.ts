@@ -32,7 +32,7 @@ test ('Verify All Products and product detail page', async ({page}) => {
     await productsPage.verifyFirstProductsAreVisible()
 
     // 7. Click on 'View Product' of first product
-    await productsPage.clickOnViewProductButtonOfFirstProduct()   
+    await productsPage.openProductByIndex(0)   
 
     // 8. Verify that product detail page is opened
     await expect(page).toHaveURL(/\/product_details\/\d+$/)   

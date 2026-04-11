@@ -25,12 +25,23 @@ export class ProductsPage {
         this.searchButton = page.locator('#submit_search')
         this.searchedProductsHeading = this.featureItemsContainer.getByText('Searched Products')       
     }
-    
 
-    async clickOnViewProductButtonOfFirstProduct(){
-        await this.commonProductsViewProductButton.first().click()
+    productCard(index: number){
+       return this.commonProductsLocator.nth(index)
     }
 
+    async openProductByIndex(index: number){
+        await this.productCard(index).locator('.choose').getByRole('link', { name: 'View Product' }).click()
+    }
+
+    async hoverOverProductByIndex(index: number){
+        await this.productCard(index).hover()
+    }
+
+    async clickOnAddToCartButtonOfHoveredProduct(index: number){
+        await this.productCard(index).locator('.productinfo .add-to-cart').click()
+    }
+    
     async verifyFirstProductsAreVisible(){
         let countOfAllProducts = await this.commonProductsLocator.count()
         expect(countOfAllProducts).toBeGreaterThan(0)
