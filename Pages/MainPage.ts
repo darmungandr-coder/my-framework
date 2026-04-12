@@ -7,6 +7,7 @@ export class MainPage {
     loggedInAsText: Locator;
     cookieConsentButton: Locator;
     continueAfterDeleteAccountButton: Locator;
+    
 
     constructor(page: Page) {
         this.page = page;

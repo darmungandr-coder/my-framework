@@ -71,3 +71,23 @@ test ('Search Product', async ({page}) => {
     // Verify all the products related to search are visible
     await productsPage.verifySearchedProductsAreVisible('Stylish Dress')
 })
+
+test('18: View Category Products', async ({page}) => {
+    const mainPage = new MainPage(page)
+    const navigationBar = new NavigationBar(page)
+    const productsPage = new ProductsPage(page)    
+   
+
+    // Navigate to url 'http://automationexercise.com'
+    await mainPage.openMainPage()
+
+    // Accept cookie
+    await mainPage.acceptCookie()
+
+    // Verify that home page is visible successfully
+    await expect(mainPage.homePageSlider).toBeVisible()
+
+    // Verify that categories are visible on left side bar
+    
+
+})
