@@ -1,6 +1,6 @@
     import { test, expect } from '@playwright/test';
-import { request } from 'http';
-import { checkInvalidMethod } from './helpers/apiAssertion';
+    import { checkInvalidMethod } from './helpers/apiAssertion';
+    import {user,createUser} from '../../Utiles/userFactory';
 
     test('Get all products', async ({request}) =>{
         const response = await request.get('/api/productsList')
@@ -51,4 +51,134 @@ import { checkInvalidMethod } from './helpers/apiAssertion';
         expect(response.status()).toBe(200)
         const body = await response.json()
         checkInvalidMethod(body)
+    })
+
+    test('API 5: POST To Search Product', async ({request}) =>{
+        const nameOfProduct = 'top'
+        const response = await request.post('/api/searchProduct',{
+            form: {
+                search_product: nameOfProduct
+            }
+        })
+        expect(response.status()).toBe(200)
+        const body = await response.json()
+        expect(body).toEqual(expect.objectContaining({
+            responseCode: 200,
+            products: expect.any(Array)
+        }))
+        for (const info of body.products){
+            const name = info.name.toLowerCase()
+            const category = info.category.category.toLowerCase()
+
+            expect(name.includes(nameOfProduct) || category.includes(nameOfProduct)).toBeTruthy()
+            
+        }
+
+    })
+
+    test('API 6: POST To Search Product without search_product parameter', async ({request})=>{
+        const response = await request.post('/api/searchProduct')
+        expect(response.status()).toBe(200)
+        const body = await response.json()
+        expect(body).toEqual(expect.objectContaining({
+            responseCode: 400,
+            message: "Bad request, search_product parameter is missing in POST request."
+        }))
+    })
+
+    test('API 7: POST To Verify Login with valid details',async ({request}) => {
+        const response = await request.post('/api/verifyLogin',{
+            form: {
+                email: user.email,
+                password: user.password
+            }
+        })
+        expect(response.status()).toBe(200)
+        const body = await response.json()
+        expect(body).toEqual(expect.objectContaining({
+            responseCode: 200,
+            message: "User exists!"
+        }))
+
+    })
+
+
+    test('API 8: POST To Verify Login without email parameter', async ({request})=>{
+        const response = await request.post('/api/verifyLogin')
+        expect(response.status()).toBe(200)
+        const body = await response.json()
+        expect(body).toEqual(expect.objectContaining({
+            responseCode: 400,
+            message: "Bad request, email or password parameter is missing in POST request."
+
+        }))
+    })
+
+    test('API 9: DELETE To Verify Login', async ({request}) => {
+        const response = await request.delete('/api/verifyLogin')
+        expect (response.status()).toBe(200)
+        const body = await response.json()
+        expect(body).toEqual(expect.objectContaining({
+            responseCode: 405,
+            message: "This request method is not supported."
+        }))
+    })
+
+    test('API 10: POST To Verify Login with invalid details', async ({request})=>{
+        const response = await request.post('/api/verifyLogin',{
+            form: {
+                email: 'invalid@email.com',
+                password: '1234'
+            }
+        })
+        expect(response.status()).toBe(200)
+        const body = await response.json()
+        expect(body).toEqual(expect.objectContaining({
+            responseCode: 404,
+            message: "User not found!"
+        }))
+    })
+
+    test('API 11: POST To Create/Register User Account',async ({request}) =>{
+        const newUser = createUser()
+        const response = await request.post('/api/createAccount', {
+            form: {
+                name: newUser.name,
+                email: newUser.email,
+                password: newUser.password,
+                title: 'Mr',
+                birth_date: newUser.dateOfBirth,
+                birth_month: newUser.monthOfBirth,
+                birth_year: newUser.yearOfBirth,
+                firstname: newUser.firstName,
+                lastname: newUser.lastName,
+                company: newUser.company,
+                address1: newUser.address1,
+                address2: newUser.address2,
+                country: newUser.country,
+                zipcode: newUser.zipCode,
+                state: newUser.state,
+                city: newUser.city,
+                mobile_number: newUser.mobilePhone,
+            }
+        })
+        expect(response.status()).toBe(200)
+        const body = await response.json()
+        expect(body).toEqual(expect.objectContaining({
+            responseCode: 201,
+            message: 'User created!'
+        }))
+
+    })
+
+    test('API 12: DELETE METHOD To Delete User Account',async ({request}) =>{
+
+    })
+
+    test('API 13: PUT METHOD To Update User Account',async ({request}) =>{
+
+    })
+
+    test('API 14: GET user account detail by email',async ({request}) =>{
+
     })
