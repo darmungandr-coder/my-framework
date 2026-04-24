@@ -1,15 +1,15 @@
 ﻿    import { test, expect } from '@playwright/test';
-    import {createUser, user} from "../Utiles/userFactory";
-    import {LoginPage} from "../Pages/LoginPage";
-    import {UserRegistration} from "../Pages/UserRegistration";
-    import {MainPage} from "../Pages/MainPage";
-    import {ensureUserExists} from "./helper/userSetup";
-    import {NavigationBar} from "../Pages/NavigationBar";
-
+    import {createUser, user} from "../../Utiles/userFactory";
+    import {LoginPage} from "../../Pages/LoginPage";
+    import {UserRegistration} from "../../Pages/UserRegistration";
+    import {MainPage} from "../../Pages/MainPage";
+    import {ensureUserExists} from "../helper/userSetup";
+    import {NavigationBar} from "../../Pages/NavigationBar";
+  
 
 
     test('Test Case 1: Register User', async ({ page }) => {
-        const newUser = createUser();
+        const newUser = createUser();   
         const mainPage = new MainPage(page)
         const loginPage = new LoginPage(page);
         const userRegistration = new UserRegistration(page);

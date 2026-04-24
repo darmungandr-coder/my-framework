@@ -1,8 +1,8 @@
     import { test, expect } from '@playwright/test';
-    import {MainPage} from "../Pages/MainPage";
-    import {ContactUsPage} from "../Pages/ContactUsPage";
-    import {NavigationBar} from "../Pages/NavigationBar";
-    import {TestCasePage} from "../Pages/TestCasePage";
+    import {MainPage} from "../../Pages/MainPage";
+    import {ContactUsPage} from "../../Pages/ContactUsPage";
+    import {NavigationBar} from "../../Pages/NavigationBar";
+    import {TestCasePage} from "../../Pages/TestCasePage";
 
     
 

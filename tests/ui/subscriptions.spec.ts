@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../Pages/MainPage';
-import { Footer } from '../Pages/Footer';
-import { user } from '../Utiles/userFactory';
-import { NavigationBar } from '../Pages/NavigationBar';
+import { MainPage } from '../../Pages/MainPage';
+import { Footer } from '../../Pages/Footer';
+import { user } from '../../Utiles/userFactory';
+import { NavigationBar } from '../../Pages/NavigationBar';
 
 
 

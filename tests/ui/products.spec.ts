@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { MainPage } from '../Pages/MainPage';
-import { NavigationBar } from '../Pages/NavigationBar';
-import { ProductsPage } from '../Pages/ProductsPage';
-import { ProductDetailPage } from '../Pages/productDetailPage'; 
+import { MainPage } from '../../Pages/MainPage';
+import { NavigationBar } from '../../Pages/NavigationBar';
+import { ProductsPage } from '../../Pages/ProductsPage';
+import { ProductDetailPage } from '../../Pages/productDetailPage'; 
 
 
 test ('Verify All Products and product detail page', async ({page}) => {

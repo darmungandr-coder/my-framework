@@ -26,12 +26,4 @@ export class ProductsSectionGrid {
 
 
 
-
-
-
-
-
-
-
-
 }
