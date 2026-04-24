@@ -1,5 +1,6 @@
     import { test, expect } from '@playwright/test';
 import { request } from 'http';
+import { checkInvalidMethod } from './helpers/apiAssertion';
 
     test('Get all products', async ({request}) =>{
         const response = await request.get('/api/productsList')
@@ -25,10 +26,7 @@ import { request } from 'http';
         const response = await request.post('/api/productsList')
         expect(response.status()).toBe(200)
         const body = await response.json()
-        expect(body).toEqual(expect.objectContaining({
-            responseCode: 405,
-            message: 'This request method is not supported.'
-        }))
+        checkInvalidMethod(body)
         })
 
     test('API 3: Get All Brands List', async ({request})=>{
@@ -46,4 +44,11 @@ import { request } from 'http';
                 brand: expect.any(String)
             }))
         }
+    })
+
+    test('API 4: PUT To All Brands List', async ({request})=>{
+        const response = await request.put('/api/brandsList')
+        expect(response.status()).toBe(200)
+        const body = await response.json()
+        checkInvalidMethod(body)
     })
