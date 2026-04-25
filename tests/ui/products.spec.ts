@@ -3,9 +3,9 @@ import { MainPage } from '../../Pages/MainPage';
 import { NavigationBar } from '../../Pages/NavigationBar';
 import { ProductsPage } from '../../Pages/ProductsPage';
 import { ProductDetailPage } from '../../Pages/productDetailPage'; 
+import { ProductsSectionGrid } from '../../Pages/ProductsSectionGrid';
 
-
-test ('Verify All Products and product detail page', async ({page}) => {
+test ('Test Case 8: Verify All Products and product detail page', async ({page}) => {
     const mainPage = new MainPage(page)
     const navigationBar = new NavigationBar(page)
     const productsPage = new ProductsPage(page)
@@ -41,7 +41,7 @@ test ('Verify All Products and product detail page', async ({page}) => {
     await productDetailPage.verifyProductDetails()
 })
 
-test ('Search Product', async ({page}) => {
+test ('Test Case 9: Search Product', async ({page}) => {
     const mainPage = new MainPage(page)
     const navigationBar = new NavigationBar(page)
     const productsPage = new ProductsPage(page)    
@@ -72,10 +72,11 @@ test ('Search Product', async ({page}) => {
     await productsPage.verifySearchedProductsAreVisible('Stylish Dress')
 })
 
-test('18: View Category Products', async ({page}) => {
+test.only('18: View Category Products', async ({page}) => {
     const mainPage = new MainPage(page)
     const navigationBar = new NavigationBar(page)
     const productsPage = new ProductsPage(page)    
+    const productsSectionGrid = new ProductsSectionGrid(page)
    
 
     // Navigate to url 'http://automationexercise.com'
@@ -88,6 +89,16 @@ test('18: View Category Products', async ({page}) => {
     await expect(mainPage.homePageSlider).toBeVisible()
 
     // Verify that categories are visible on left side bar
-    
+    await expect(productsSectionGrid.categorySection).toBeVisible()
+
+    // Click on 'Women' category
+    await productsSectionGrid.clickOnCategory('Women ')
+
+    // Click on any category link under 'Women' category, for example: Dress
+    await productsSectionGrid.clickOnSubCategory("Women ",  "Dress ");
+
+    // Verify that category page is displayed and confirm text 'WOMEN - TOPS PRODUCTS'
+    await expect(productsSectionGrid.featureItems).toHaveText('Women - Dress Products')
+
 
 })

@@ -5,7 +5,7 @@ import { ProductsPage } from '../../Pages/ProductsPage';
 import { ProductDetailPage } from '../../Pages/productDetailPage'; 
 
 
-test ('Add Products in Cart', async ({page}) => {
+test ('Test Case 12: Add Products in Cart', async ({page}) => {
     const mainPage = new MainPage(page)
     const navigationBar = new NavigationBar(page)
     const productsPage = new ProductsPage(page)

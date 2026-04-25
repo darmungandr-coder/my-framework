@@ -91,8 +91,8 @@ test('API 7: POST To Verify Login with valid details', async ({ request }) => {
 
     const response = await request.post('/api/verifyLogin', {
         form: {
-            email: user.email,
-            password: user.password,
+            email: newUser.email,
+            password: newUser.password,
         },
     });
     expect(response.status()).toBe(200);
