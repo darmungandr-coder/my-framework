@@ -1,8 +1,8 @@
-import { APIRequestContext } from "@playwright/test"
-import { User } from "../../../Utiles/userFactory"
+import { APIRequestContext, expect } from '@playwright/test';
+import { User } from '../../../Utiles/userFactory';
 
 export function createUserViaApi(request: APIRequestContext, newUser: User) {
-        return request.post('/api/createAccount', {
+    return request.post('/api/createAccount', {
         form: {
             name: newUser.name,
             email: newUser.email,
@@ -21,6 +21,22 @@ export function createUserViaApi(request: APIRequestContext, newUser: User) {
             state: newUser.state,
             city: newUser.city,
             mobile_number: newUser.mobilePhone,
-            }
-        })
+        },
+    });
+}
+
+export async function deleteUserViaApiAndExpectSuccess(request: APIRequestContext, newUser: User) {
+    const deleteResponse = await request.delete('/api/deleteAccount', {
+        form: {
+            email: newUser.email,
+            password: newUser.password,
+        },
+    });
+    expect(deleteResponse.status()).toBe(200);
+
+    const deleteResponseBody = await deleteResponse.json();
+    expect(deleteResponseBody).toEqual(expect.objectContaining({
+        responseCode: 200,
+        message: 'Account deleted!',
+    }));
 }
