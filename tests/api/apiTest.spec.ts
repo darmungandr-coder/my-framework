@@ -1,31 +1,23 @@
     import { test, expect } from '@playwright/test';
-    import { checkInvalidMethod, creatingUserViaApi } from './helpers/apiAssertion';
+    import { checkInvalidMethod, expectProductStructure, Product} from './helpers/apiAssertion';
     import {user,createUser} from '../../Utiles/userFactory';
+    import {createUserViaApi} from './helpers/userApi'
 
-    test('Get all products', async ({request}) =>{
+
+    test('API 1: should return all products', async ({request}) =>{
         const response = await request.get('/api/productsList')
         expect(response.status()).toBe(200)
-        const body = await response.json()
+        const body = await response.json() as {products : Product[]}
         expect(Array.isArray(body.products)).toBeTruthy()
         expect(body.products.length).toBeGreaterThan(0)
         for(const product of body.products){
-            expect(product).toEqual(expect.objectContaining({
-                id: expect.any(Number),
-                name: expect.any(String),
-                price: expect.any(String),
-                brand: expect.any(String),
-                category: expect.any(Object),
-            }))
-            expect(product.category).toEqual(expect.objectContaining({
-                usertype: expect.any(Object),
-                category: expect.any(String),
-            }))
+            expectProductStructure(product)
         }
 })
     test('Post to All Products List', async ({request}) => {
         const response = await request.post('/api/productsList')
         expect(response.status()).toBe(200)
-        const body = await response.json()
+        const body = await response.json() 
         checkInvalidMethod(body)
         })
 
@@ -141,19 +133,38 @@
 
     test('API 11: POST To Create/Register User Account',async ({request}) =>{
         const newUser = createUser()
-        const response = await creatingUserViaApi(request, newUser)
+        let userCreated = false
+        try{
+        const response = await createUserViaApi(request, newUser)
         expect(response.status()).toBe(200)
         const body = await response.json()
         expect(body).toEqual(expect.objectContaining({
             responseCode: 201,
             message: 'User created!'
+            
         }))
-
+        userCreated = true;
+    } finally{
+        if (userCreated){
+        const deleteResponse = await request.delete('/api/deleteAccount', {
+            form: {
+                email: newUser.email,
+                password: newUser.password
+            }
+        })
+        expect(deleteResponse.status()).toBe(200)
+        const deleteResponseBody = await deleteResponse.json()
+        expect(deleteResponseBody).toEqual(expect.objectContaining({
+            responseCode: 200,
+            message: "Account deleted!"
+        }))
+    }
+}
     })
 
     test('API 12: DELETE METHOD To Delete User Account',async ({request}) =>{
         const newUser = createUser()
-        const response = await creatingUserViaApi(request, newUser)
+        const response = await createUserViaApi(request, newUser)
         expect(response.status()).toBe(200)
         const body = await response.json()
         expect(body).toEqual(expect.objectContaining({
@@ -176,13 +187,14 @@
 
     test('API 13: PUT METHOD To Update User Account',async ({request}) =>{
         const newUser = createUser()
-        const response = await creatingUserViaApi(request, newUser)
+        const response = await createUserViaApi(request, newUser)
         expect(response.status()).toBe(200)
         const body = await response.json()
         expect(body).toEqual(expect.objectContaining({
             responseCode: 201,
             message: 'User created!'
         }))
+        try{
         const updateUserResponse = await request.put('/api/updateAccount',{
             form: {
             name: newUser.name,
@@ -210,8 +222,8 @@
             responseCode: 200,
             message: "User updated!"
         }))
-
-        const deleteResponse = await request.delete('/api/deleteAccount', {
+    } finally {
+             const deleteResponse = await request.delete('/api/deleteAccount', {
             form: {
                 email: newUser.email,
                 password: newUser.password
@@ -223,18 +235,19 @@
             responseCode: 200,
             message: "Account deleted!"
         }))
+    }
     })
 
     test('API 14: GET user account detail by email',async ({request}) =>{
         const newUser = createUser()
-        const response = await creatingUserViaApi(request, newUser)
+        const response = await createUserViaApi(request, newUser)
         expect(response.status()).toBe(200)
         const body = await response.json()
         expect(body).toEqual(expect.objectContaining({
             responseCode: 201,
             message: 'User created!'
         }))
-
+        try {
         const getInfoResponse = await request.get('/api/getUserDetailByEmail',{
             params:{
                 email: newUser.email
@@ -246,6 +259,7 @@
             responseCode: 200,
             user: expect.any(Object)
         }))
+    } finally {
         const deleteResponse = await request.delete('/api/deleteAccount', {
             form: {
                 email: newUser.email,
@@ -258,5 +272,6 @@
             responseCode: 200,
             message: "Account deleted!"
         }))
+    }
 
     })

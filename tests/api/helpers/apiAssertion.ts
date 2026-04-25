@@ -1,5 +1,15 @@
-import { APIRequestContext, expect} from "@playwright/test"
-import { User} from "../../../Utiles/userFactory"
+import {expect} from "@playwright/test"
+
+export type Product ={
+    id: number
+  name: string
+  price: string
+  brand: string
+  category: {
+    usertype: object
+    category: string
+  }
+}
 
 
 
@@ -10,26 +20,16 @@ export function checkInvalidMethod(body: any){
     }))
 }
 
-export function creatingUserViaApi(request: APIRequestContext, newUser: User) {
-        return request.post('/api/createAccount', {
-        form: {
-            name: newUser.name,
-            email: newUser.email,
-            password: newUser.password,
-            title: 'Mr',
-            birth_date: newUser.dateOfBirth,
-            birth_month: newUser.monthOfBirth,
-            birth_year: newUser.yearOfBirth,
-            firstname: newUser.firstName,
-            lastname: newUser.lastName,
-            company: newUser.company,
-            address1: newUser.address1,
-            address2: newUser.address2,
-            country: newUser.country,
-            zipcode: newUser.zipCode,
-            state: newUser.state,
-            city: newUser.city,
-            mobile_number: newUser.mobilePhone,
-            }
-        })
+export function expectProductStructure(product: Product){
+    expect(product).toEqual(expect.objectContaining({
+    id: expect.any(Number),
+    name: expect.any(String),
+    price: expect.any(String),
+    brand: expect.any(String),
+    category: expect.any(Object),
+    }))
+    expect(product.category).toEqual(expect.objectContaining({
+    usertype: expect.any(Object),
+    category: expect.any(String),
+    }))
 }
