@@ -149,7 +149,7 @@ test('Test Case 19: View & Cart Brand Products', async ({page})=>{
 
 })
 
-test.only('Test Case 21: Add review on product', async ({page})=>{
+test('Test Case 21: Add review on product', async ({page})=>{
     const mainPage = new MainPage(page) 
     const navigationBar = new NavigationBar(page)
     const productsSectionGrid = new ProductsSectionGrid(page)
