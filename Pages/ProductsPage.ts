@@ -19,6 +19,7 @@ export class ProductsPage {
     addedModal: Locator;
     addedModalHeading: Locator;
     continueShoppingButton: Locator;
+    viewCartButton: Locator;
 
 
 
@@ -45,6 +46,7 @@ export class ProductsPage {
         this.addedModal = page.locator('#cartModal')
         this.addedModalHeading = this.addedModal.getByRole('heading', { name: 'Added!' })
         this.continueShoppingButton = this.addedModal.getByRole('button', { name: 'Continue Shopping' })
+        this.viewCartButton = this.addedModal.getByRole('link', { name: 'View Cart' })
 
 
 
@@ -72,6 +74,10 @@ export class ProductsPage {
 
     async continueShopping() {
         await this.continueShoppingButton.click()
+    }
+
+    async openCartFromAddedModal() {
+        await this.viewCartButton.click()
     }
 
     async verifyFirstProductsAreVisible() {

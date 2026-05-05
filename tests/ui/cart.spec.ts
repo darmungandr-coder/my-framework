@@ -41,13 +41,16 @@ test ('Test Case 12: Add Products in Cart', async ({page}) => {
     await productsPage.hoverOverProductByIndex(0)
     await productsPage.productName(0)
     await productsPage.clickOnAddToCartButtonOfHoveredProduct(0)
+    await expect(productsPage.addedModalHeading).toBeVisible()
+    await productsPage.continueShopping()
 
     // Hover over second product and click 'Add to cart'
     await productsPage.hoverOverProductByIndex(1)
     await productsPage.clickOnAddToCartButtonOfHoveredProduct(1)
+    await expect(productsPage.addedModalHeading).toBeVisible()
 
     // Click 'View Cart' button
-    await navigationBar.openCartPage()
+    await productsPage.openCartFromAddedModal()
 
     // Verify both products are added to Cart
 
