@@ -10,6 +10,11 @@ export class ProductDetailPage {
     productAvailability: Locator;
     productCondition: Locator;
     productBrand: Locator;
+    quantityInput: Locator;
+    addToCartButton: Locator;
+    addedModal: Locator;
+    addedModalHeading: Locator;
+    viewCartButton: Locator;
 
 
     constructor(page: Page) {
@@ -21,6 +26,11 @@ export class ProductDetailPage {
         this.productAvailability = this.productInformationContainer.locator('p').filter({hasText: 'Availability: '})
         this.productCondition = this.productInformationContainer.locator('p').filter({hasText: 'Condition: '})
         this.productBrand = this.productInformationContainer.locator('p').filter({hasText: 'Brand: '})
+        this.quantityInput = page.locator('#quantity')
+        this.addToCartButton = page.getByRole('button', { name: /Add to cart/ })
+        this.addedModal = page.locator('#cartModal')
+        this.addedModalHeading = this.addedModal.getByRole('heading', { name: 'Added!' })
+        this.viewCartButton = this.addedModal.getByRole('link', { name: 'View Cart' })
     }
 
     async verifyProductDetails(){
@@ -34,5 +44,17 @@ export class ProductDetailPage {
 
     async verifyFirstProductIsVisible(){
         await expect(this.productName).toBeVisible()
+    }
+
+    async setQuantity(quantity: string) {
+        await this.quantityInput.fill(quantity)
+    }
+
+    async addToCart() {
+        await this.addToCartButton.click()
+    }
+
+    async openCartFromAddedModal() {
+        await this.viewCartButton.click()
     }
 }

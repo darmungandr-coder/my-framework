@@ -16,6 +16,9 @@ export class ProductsPage {
     reviewerMessage: Locator;
     submitButton: Locator;
     successMessageForReview: Locator;
+    addedModal: Locator;
+    addedModalHeading: Locator;
+    continueShoppingButton: Locator;
 
 
 
@@ -39,6 +42,9 @@ export class ProductsPage {
         this.reviewerMessage = page.getByPlaceholder('Add Review Here!')
         this.submitButton = page.getByRole('button', { name: 'Submit' })
         this.successMessageForReview = page.getByText('Thank you for your review.', { exact: true })
+        this.addedModal = page.locator('#cartModal')
+        this.addedModalHeading = this.addedModal.getByRole('heading', { name: 'Added!' })
+        this.continueShoppingButton = this.addedModal.getByRole('button', { name: 'Continue Shopping' })
 
 
 
@@ -62,6 +68,10 @@ export class ProductsPage {
 
     async clickOnAddToCartButtonOfHoveredProduct(index: number) {
         await this.productCard(index).locator('.productinfo .add-to-cart').click()
+    }
+
+    async continueShopping() {
+        await this.continueShoppingButton.click()
     }
 
     async verifyFirstProductsAreVisible() {
