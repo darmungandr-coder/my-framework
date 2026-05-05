@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { checkInvalidMethod, expectProductStructure, Product } from './helpers/apiAssertion';
-import { createUser, user } from '../../Utiles/userFactory';
+import { createUser} from '../../Utiles/userFactory';
 import { createUserViaApi, deleteUserViaApiAndExpectSuccess } from './helpers/userApi';
 
 test('API 1: should return all products', async ({ request }) => {

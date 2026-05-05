@@ -10,6 +10,8 @@ test ('Test Case 12: Add Products in Cart', async ({page}) => {
     const navigationBar = new NavigationBar(page)
     const productsPage = new ProductsPage(page)
     const productDetailPage = new ProductDetailPage(page)
+    
+    const products: string[] = []
 
     // Navigate to url 'http://automationexercise.com'
     await mainPage.openMainPage()
@@ -31,6 +33,7 @@ test ('Test Case 12: Add Products in Cart', async ({page}) => {
 
     // Hover over first product and click 'Add to cart' 
     await productsPage.hoverOverProductByIndex(0)
+    await productsPage.productName(0)
     await productsPage.clickOnAddToCartButtonOfHoveredProduct(0)
 
     // Hover over second product and click 'Add to cart'
@@ -39,10 +42,8 @@ test ('Test Case 12: Add Products in Cart', async ({page}) => {
 
     // Click 'View Cart' button
     await navigationBar.openCartPage()
-    await page.pause()
 
     // Verify both products are added to Cart
-
 
 
     // Verify their prices, quantity and total price

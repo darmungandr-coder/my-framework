@@ -10,6 +10,15 @@ export class ProductsPage {
     searchProductInput: Locator;
     searchButton: Locator;
     searchedProductsHeading: Locator;
+    writeYourReviewText: Locator;
+    reviewersName: Locator;
+    reviewersEmail: Locator;
+    reviewerMessage: Locator;
+    submitButton: Locator;
+    successMessageForReview: Locator;
+
+
+
 
 
 
@@ -23,45 +32,76 @@ export class ProductsPage {
         this.commonProductsViewProductButton = this.commonProductsLocator.locator('.choose').getByRole('link', { name: 'View Product' })
         this.searchProductInput = page.locator('#search_product')
         this.searchButton = page.locator('#submit_search')
-        this.searchedProductsHeading = this.featureItemsContainer.getByText('Searched Products')       
+        this.searchedProductsHeading = this.featureItemsContainer.getByText('Searched Products')
+        this.writeYourReviewText = page.getByRole('link', { name: 'Write Your Review' })
+        this.reviewersName = page.getByPlaceholder('Your Name')
+        this.reviewersEmail = page.locator('#email')
+        this.reviewerMessage = page.getByPlaceholder('Add Review Here!')
+        this.submitButton = page.getByRole('button', { name: 'Submit' })
+        this.successMessageForReview = page.getByText('Thank you for your review.', { exact: true })
+
+
+
     }
 
-    productCard(index: number){
-       return this.commonProductsLocator.nth(index)
+    productCard(index: number) {
+        return this.commonProductsLocator.nth(index)
     }
 
-    async openProductByIndex(index: number){
+    async openProductByIndex(index: number) {
         await this.productCard(index).locator('.choose').getByRole('link', { name: 'View Product' }).click()
     }
 
-    async hoverOverProductByIndex(index: number){
+    async hoverOverProductByIndex(index: number) {
         await this.productCard(index).hover()
     }
 
-    async clickOnAddToCartButtonOfHoveredProduct(index: number){
+    async productName(index: number) {
+        return await this.productCard(index).locator('.productinfo p').innerText()
+    }
+
+    async clickOnAddToCartButtonOfHoveredProduct(index: number) {
         await this.productCard(index).locator('.productinfo .add-to-cart').click()
     }
-    
-    async verifyFirstProductsAreVisible(){
+
+    async verifyFirstProductsAreVisible() {
         let countOfAllProducts = await this.commonProductsLocator.count()
         expect(countOfAllProducts).toBeGreaterThan(0)
-        for (let i =0; i < Math.min(countOfAllProducts, 5); i++){
+        for (let i = 0; i < Math.min(countOfAllProducts, 5); i++) {
             await expect(this.commonProductsLocator.nth(i)).toBeVisible()
         }
     }
 
-    async searchProduct(productName: string){
+    async searchProduct(productName: string) {
         await this.searchProductInput.fill(productName)
         await this.searchButton.click()
     }
 
-    async verifySearchedProductsAreVisible(productName: string){
+    async verifySearchedProductsAreVisible(productName: string) {
         let countOfSearchedProducts = await this.commonProductsLocator.count()
         expect(countOfSearchedProducts).toBeGreaterThan(0)
-        for (let i =0; i < countOfSearchedProducts; i++){
+        for (let i = 0; i < countOfSearchedProducts; i++) {
             await expect(this.commonProductsLocator.nth(i)).toBeVisible()
             await expect(this.commonProductsLocator.nth(i).locator('.productinfo p')).toHaveText(productName)
-            
+
         }
     }
+
+    async fillReviewersName(userName: string) {
+        await this.reviewersName.fill(userName)
+    }
+
+    async fillReviewersEmail(userEmail: string) {
+        await this.reviewersEmail.fill(userEmail)
+    }
+
+    async fillReviewersMessage(userMessage: string) {
+        await this.reviewerMessage.fill(userMessage)
+    }
+
+    async clickOnSubmitButton() {
+        this.submitButton.click()
+    }
+
+
 }

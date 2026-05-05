@@ -4,6 +4,7 @@ import { NavigationBar } from '../../Pages/NavigationBar';
 import { ProductsPage } from '../../Pages/ProductsPage';
 import { ProductDetailPage } from '../../Pages/productDetailPage'; 
 import { ProductsSectionGrid } from '../../Pages/ProductsSectionGrid';
+import {user} from '../../Utiles/userFactory'
 
 test ('Test Case 8: Verify All Products and product detail page', async ({page}) => {
     const mainPage = new MainPage(page)
@@ -72,11 +73,14 @@ test ('Test Case 9: Search Product', async ({page}) => {
     await productsPage.verifySearchedProductsAreVisible('Stylish Dress')
 })
 
-test.only('18: View Category Products', async ({page}) => {
-    const mainPage = new MainPage(page)
-    const navigationBar = new NavigationBar(page)
-    const productsPage = new ProductsPage(page)    
+test('18: View Category Products', async ({page}) => {
+    const mainPage = new MainPage(page) 
     const productsSectionGrid = new ProductsSectionGrid(page)
+    const womenCategory = "Women"
+    const womenSubCategory = "Tops"
+    const manCategory = 'Men'
+    const manSubCategory = 'Tshirts'
+    const categoryTitle = (category:string, subCategory:string) => `${category} - ${subCategory} Products`
    
 
     // Navigate to url 'http://automationexercise.com'
@@ -92,13 +96,96 @@ test.only('18: View Category Products', async ({page}) => {
     await expect(productsSectionGrid.categorySection).toBeVisible()
 
     // Click on 'Women' category
-    await productsSectionGrid.clickOnCategory('Women ')
+    await productsSectionGrid.clickOnCategory(womenCategory)
 
     // Click on any category link under 'Women' category, for example: Dress
-    await productsSectionGrid.clickOnSubCategory("Women ",  "Dress ");
+    await productsSectionGrid.clickOnSubCategory(womenCategory,  womenSubCategory);
 
     // Verify that category page is displayed and confirm text 'WOMEN - TOPS PRODUCTS'
-    await expect(productsSectionGrid.featureItems).toHaveText('Women - Dress Products')
+    await expect(productsSectionGrid.titleHelperText).toHaveText(categoryTitle(womenCategory, womenSubCategory))
 
+    // On left side bar, click on any sub-category link of 'Men' category
+    await productsSectionGrid.clickOnCategory(manCategory)
+    await productsSectionGrid.clickOnSubCategory(manCategory,manSubCategory)
+
+    //  Verify that user is navigated to that category page
+    await expect(productsSectionGrid.titleHelperText).toHaveText(categoryTitle(manCategory, manSubCategory))
 
 })
+
+test('Test Case 19: View & Cart Brand Products', async ({page})=>{
+    const mainPage = new MainPage(page) 
+    const navigationBar = new NavigationBar(page)
+    const productsSectionGrid = new ProductsSectionGrid(page)
+    const brand = 'Polo'
+    const brandTwo = 'Biba'
+    const textHelper = (branName: string) => `Brand - ${branName} Products`
+    
+    // Navigate to url 'http://automationexercise.com'
+    await mainPage.openMainPage()
+
+    // Accept cookie
+    await mainPage.acceptCookie()
+
+    // Click on 'Products' button
+    await navigationBar.openProductsPage()
+
+    // Verify that Brands are visible on left side bar
+    await expect(productsSectionGrid.brandsSection).toBeVisible()
+
+    // Click on any brand name
+    await productsSectionGrid.clickOnBrand(brand)
+
+    // Verify that user is navigated to brand page and brand products are displayed
+    await expect(page).toHaveURL(`https://automationexercise.com/brand_products/${brand}`)
+    await expect(productsSectionGrid.titleHelperText).toHaveText(textHelper(brand))
+
+    //  On left side bar, click on any other brand link
+    await productsSectionGrid.clickOnBrand(brandTwo)
+
+    // Verify that user is navigated to that brand page and can see products
+    await expect(page).toHaveURL(`https://automationexercise.com/brand_products/${brandTwo}`)
+    await expect(productsSectionGrid.titleHelperText).toHaveText(textHelper(brandTwo))
+
+})
+
+test.only('Test Case 21: Add review on product', async ({page})=>{
+    const mainPage = new MainPage(page) 
+    const navigationBar = new NavigationBar(page)
+    const productsSectionGrid = new ProductsSectionGrid(page)
+    const productsPage = new ProductsPage(page)
+    const reviewerMessage = 'Hello'
+
+
+    // Navigate to url 'http://automationexercise.com'
+    await mainPage.openMainPage()
+
+    // Accept cookie
+    await mainPage.acceptCookie()
+
+    // Click on 'Products' button
+    await navigationBar.openProductsPage()
+
+    // Verify user is navigated to ALL PRODUCTS page successfully
+    await expect(productsSectionGrid.titleHelperText).toHaveText('All Products')
+
+    //Click on 'View Product' button
+    await productsPage.openProductByIndex(0)
+
+    // Verify 'Write Your Review' is visible
+    await expect(productsPage.writeYourReviewText).toBeVisible()
+
+    // Enter name, email and review
+    await productsPage.fillReviewersName(user.name)
+    await productsPage.fillReviewersEmail(user.email)
+    await productsPage.fillReviewersMessage(reviewerMessage)
+
+    // Click 'Submit' button
+    await productsPage.clickOnSubmitButton()
+
+    // Verify success message 'Thank you for your review.'
+    await expect(productsPage.successMessageForReview).toBeVisible()
+
+
+}
+)
