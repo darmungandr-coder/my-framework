@@ -101,7 +101,7 @@ test('Test Case 13: Verify Product quantity in Cart', async ({page}) => {
     await expect(cartPage.productQuantity(productName)).toHaveText(quantity)
 })
 
-test.only('Test Case 14: Place Order: Register while Checkout', async ({page}) => {
+test('Test Case 14: Place Order: Register while Checkout', async ({page}) => {
     const newUser = createUser()
     const mainPage = new MainPage(page)
     const navigationBar = new NavigationBar(page)
