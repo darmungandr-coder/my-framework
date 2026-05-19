@@ -1,69 +1,116 @@
+# Name of the workflow in GitHub Actions
 name: Playwright Tests
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
 
+# Defines when the workflow should run
+on:
+  # Allows manual run from the GitHub Actions UI
+  workflow_dispatch:
+
+  # Runs automatically after push to the main branch
+  push:
+    branches: [main]
+
+# Permissions required for GitHub Pages deployment
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Prevents multiple GitHub Pages deployments from running at the same time
 concurrency:
   group: github-pages
   cancel-in-progress: true
 
 jobs:
   test:
-    timeout-minutes: 60
+    # GitHub runner
     runs-on: ubuntu-latest
+
+    # Maximum job execution time
+    timeout-minutes: 60
+
+    # Official Playwright Docker image with browsers and system dependencies
     container:
       image: mcr.microsoft.com/playwright:v1.58.2-noble
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      # Download repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install Node.js and enable npm cache
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: npm
-      - uses: actions/setup-java@v4
+
+      # Install Java, required for Allure report generation
+      - name: Setup Java for Allure
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
-      - uses: actions/configure-pages@v5
+
+      # Prepare GitHub Pages deployment
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      # Install project dependencies from package-lock.json
       - name: Install dependencies
         run: npm ci
+
+      # Run all Playwright tests
       - name: Run Playwright tests
         run: npx playwright test
+
+      # Generate Allure HTML report even if tests fail
       - name: Generate Allure report
-        if: ${{ !cancelled() }}
+        if: always()
         run: npx allure-commandline generate ./allure-results --clean -o ./allure-report
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+
+      # Save Allure report as downloadable artifact
+      - name: Upload Allure report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report/
           retention-days: 30
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+
+      # Save Playwright HTML report as downloadable artifact
+      - name: Upload Playwright report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-      - name: Upload Pages artifact
-        if: ${{ !cancelled() }}
+
+      # Prepare Allure report for GitHub Pages publishing
+      - name: Upload Allure report to GitHub Pages
+        if: always()
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ./allure-report
+          path: allure-report/
 
   deploy:
-    if: ${{ !cancelled() && (github.ref_name == 'main' || github.ref_name == 'master') }}
+    # Deploy only after the test job is finished
     needs: test
+
+    # GitHub runner for deployment
     runs-on: ubuntu-latest
+
+    # Deploy only from the main branch
+    if: github.ref_name == 'main'
+
+    # GitHub Pages environment
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
-      - name: Deploy to GitHub Pages
+      # Publish Allure report to GitHub Pages
+      - name: Deploy Allure report to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
